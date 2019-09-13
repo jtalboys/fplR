@@ -1,0 +1,55 @@
+---
+title: "Figuring out the API!"
+author: "Jack Talboys"
+date: "13 September 2019"
+output: html_document
+---
+
+There are two ways to access the FPL API, looks like once gives an overall view of loads of things, while the other gives player information (even from other seasons).
+To view the player specific data it requires a 'Player ID', which I'll obtain from the big boy API.
+
+We'll start by accessing the aforementioned 'big boy API' using the `jsonlite` package.
+
+```{r}
+# Set the url
+url <- 'https://fantasy.premierleague.com/api/bootstrap-static/'
+
+# Call out to fromJSON with the url
+library(jsonlite)
+result <- fromJSON(url)
+```
+
+Lets take a look at the names
+```{r}
+names(result)
+```
+
+There's quite a lot of stuff that I'm not interested in, like when the phases are or the specific user team stuff. The `teams` data frame is quite interesting. Doesn't look like it gets updated with results but there are interesting values given for each teams, attacking, defensive and overall strength for home and away games.
+
+```{r, message=FALSE}
+# library dplyr for the dplyr verbs
+library(dplyr)
+result$teams %>% select(id, name, starts_with('strength')) %>% head(3)
+```
+
+The rest of the datasets are to do with 'elements', or as they're more commonly known, the players! `element_stats` just gives the expanded column names (e.g. the column minutes corresponds to minutes played) while `element_types` detail how many of each position any team can have.
+
+```{r}
+result$element_stats
+
+result$element_types
+```
+
+The real meat is in just `result$elements`. A row for each player and a few dozen columns detailing all kinds of information. The stats are season long ones however, if we want it broken down by gameweek then we'll need to other url, and for that we'll need the ID for each player.
+
+Let's create a table detailing the id for each player, we'll also make this data set available to the user so that they can pass the id's through to the functions we're going to create.
+
+```{r}
+id_lookup <- result$elements %>%
+  select(id, first_name, second_name) %>%
+  mutate(name = stringr::str_c(first_name, second_name, sep = " ")) %>%
+  select(name, id)
+
+# To export this dataset, use usethis::use_data()
+# usethis::use_data(id_lookup)
+```
