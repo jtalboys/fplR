@@ -66,3 +66,34 @@ head(id_lookup)
 # usethis::use_data(id_lookup)
 ```
 
+We've obtained what we want for now from the first url link, now it's time for the player specific link. We can access this again using fromJSON, but will have to supply a player ID at the end of the URL.
+
+```{r}
+# set the player ID - we'll go with Mo Salah's 191
+id <- 191
+# and define the base url
+url <- 'https://fantasy.premierleague.com/api/element-summary/'
+# combine these to form the query
+query <- paste0(url, id, '/')
+
+# Now we can apply the fromJSON function with this query as the argument
+salah <- fromJSON(query)
+
+names(salah)
+```
+
+This returns 3 datasets, `fixtures`, `history` and `history_past`. `history_past` contains data from previous seasons - so isn't much interest here. `fixtures` details information about a players upcoming fixtures:
+
+```{r}
+head(salah$fixtures)
+```
+
+It provides some interesting metrics, such as whether the player is at home and the 'difficulty' assigned to the fixture for the player based on the fantasy premier leagues algorithm. It may make this avaialble to the end user but it will probably be one of the last things that I do.
+
+The `history` dataset is where the real meat is. At the time of writing only 4 fixtures have been played but for each one we get a detailed breakdown of how that player performed and what their price was at the time. This is the main thing that we want to make avaialble to the end user.
+
+```{r}
+head(salah$history)
+```
+
+There are some variables that don't completely make sense, so columns like fixture and kickoff_time I'll remove before the end user sees the result.

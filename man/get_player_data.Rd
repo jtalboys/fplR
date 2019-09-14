@@ -17,7 +17,7 @@ Note that if gameweeks chosen haven't been played yet then data won't be display
 Defaults to all gameweeks.}
 }
 \value{
-A data frame, with one row of data for each player for each gameweek
+A data frame, with one row of data for each chosen player for each chosen gameweek
 }
 \description{
 Function to extract data for a specific player from a certain gameweek.

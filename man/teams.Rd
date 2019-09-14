@@ -10,8 +10,12 @@
    \item{name}{full name}
    \item{short_name}{abbreviated name}
    \item{strength}{Overall strenght value assigned by FPL algorithm}
-   \item{stength_*}{Breakdown of a teams strengths, split in to overall, attacking
-   and defending for home and away}
+   \item{strength_attack_away}{Teams attacking strength when playing away}
+   \item{strength_attack_home}{Teams attacking strength when playing at home}
+   \item{strength_defence_away}{Teams defensive strength when playing away}
+   \item{strength_defence_home}{Teams defensive strength when playing at home}
+   \item{strength_overall_away}{Teams overall strength when playing away}
+   \item{strength_overall_home}{Teams overall strength when playing at home}
 }}
 \source{
 \url{https://fantasy.premierleague.com/api/bootstrap-static/}

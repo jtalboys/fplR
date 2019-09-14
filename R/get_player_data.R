@@ -8,7 +8,7 @@
 #' Note that if gameweeks chosen haven't been played yet then data won't be displayed for them.
 #' Defaults to all gameweeks.
 #' 
-#' @return A data frame, with one row of data for each player for each gameweek
+#' @return A data frame, with one row of data for each chosen player for each chosen gameweek
 #' 
 #' @export
 #' 
@@ -26,6 +26,7 @@
 #' 
 #' get_player_data(c('Simon Mignolet', 'Laurent Koscielny'))
 get_player_data <- function(players, gw = 1:38) {
+
   # start with the base url
   url <- 'https://fantasy.premierleague.com/api/element-summary/'
   
@@ -34,8 +35,6 @@ get_player_data <- function(players, gw = 1:38) {
   # using the id_lookup table.
   
   if (is.character(players)) {
-    # First load in the id_lookup dataset
-    data(id_lookup)
     
     # Use filter and pull to get the player ID's
     players <- dplyr::filter(id_lookup, name %in% players) %>%
@@ -54,10 +53,7 @@ get_player_data <- function(players, gw = 1:38) {
   
   # Lovely!
   # Now to just tidy it up for the end user
-  
-  # (We'll require the teams dataset so load that here)
-  data(teams)
-  
+
   # We'll start by including the players actual name
   df <- df %>%
     dplyr::left_join(id_lookup %>% dplyr::select(id, name),
