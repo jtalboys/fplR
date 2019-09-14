@@ -8,6 +8,9 @@ Authors@R:
            email = "jtalboys@mango-solutions.com")
 Description: Allows users to extract information about players (and maybe more!)
   via the Fantasy Premier League API.
+Depends:
+  R (>= 2.10)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.1
