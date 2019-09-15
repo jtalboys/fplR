@@ -1,0 +1,99 @@
+---
+title: "Figuring out the API!"
+author: "Jack Talboys"
+date: "13 September 2019"
+output: html_document
+---
+
+There are two ways to access the FPL API, looks like once gives an overall view of loads of things, while the other gives player information (even from other seasons).
+To view the player specific data it requires a 'Player ID', which I'll obtain from the big boy API.
+
+We'll start by accessing the aforementioned 'big boy API' using the `jsonlite` package.
+
+```{r}
+# Set the url
+url <- 'https://fantasy.premierleague.com/api/bootstrap-static/'
+
+# Call out to fromJSON with the url
+library(jsonlite)
+result <- fromJSON(url)
+```
+
+Lets take a look at the names
+```{r}
+names(result)
+```
+
+There's quite a lot of stuff that I'm not interested in, like when the phases are or the specific user team stuff. The `teams` data frame is quite interesting. Doesn't look like it gets updated with results but there are interesting values given for each teams, attacking, defensive and overall strength for home and away games.
+
+```{r, message=FALSE}
+# library dplyr for the dplyr verbs
+library(dplyr)
+result$teams %>% select(id, name, starts_with('strength')) %>% head(3)
+```
+
+The rest of the datasets are to do with 'elements', or as they're more commonly known, the players! `element_stats` just gives the expanded column names (e.g. the column minutes corresponds to minutes played) while `element_types` detail how many of each position any team can have.
+
+```{r}
+result$element_stats
+
+result$element_types
+```
+
+The real meat is in just `result$elements`. A row for each player and a few dozen columns detailing all kinds of information. The stats are season long ones however, if we want it broken down by gameweek then we'll need to other url, and for that we'll need the ID for each player.
+
+Let's create a table detailing the id for each player, we'll also make this data set available to the user so that they can pass the id's through to the functions we're going to create.
+
+We'll also include the team that the player plays for and their position in this dataset, which will require a few merges.
+
+```{r}
+id_lookup <- result$elements %>%
+  select(id, first_name, second_name, element_type, team) %>%
+  mutate(name = stringr::str_c(first_name, second_name, sep = " ")) %>%
+  select(-first_name, -second_name) %>%
+  # join the position data frame
+  left_join(result$element_types %>% select(id, position = singular_name),
+            by = c('element_type' = 'id')) %>%
+  # join the teams data frame
+  left_join(result$teams %>% select(id, team_name = name),
+            by = c('team' = 'id')) %>%
+  # tidy up the columns
+  select(-team, -element_type)
+
+head(id_lookup)
+
+# To export this dataset, use usethis::use_data()
+# usethis::use_data(id_lookup)
+```
+
+We've obtained what we want for now from the first url link, now it's time for the player specific link. We can access this again using fromJSON, but will have to supply a player ID at the end of the URL.
+
+```{r}
+# set the player ID - we'll go with Mo Salah's 191
+id <- 191
+# and define the base url
+url <- 'https://fantasy.premierleague.com/api/element-summary/'
+# combine these to form the query
+query <- paste0(url, id, '/')
+
+# Now we can apply the fromJSON function with this query as the argument
+salah <- fromJSON(query)
+
+names(salah)
+```
+
+This returns 3 datasets, `fixtures`, `history` and `history_past`. `history_past` contains data from previous seasons - so isn't much interest here. `fixtures` details information about a players upcoming fixtures:
+
+```{r}
+head(salah$fixtures)
+```
+
+It provides some interesting metrics, such as whether the player is at home and the 'difficulty' assigned to the fixture for the player based on the fantasy premier leagues algorithm. It may make this avaialble to the end user but it will probably be one of the last things that I do.
+
+The `history` dataset is where the real meat is. At the time of writing only 4 fixtures have been played but for each one we get a detailed breakdown of how that player performed and what their price was at the time. This is the main thing that we want to make avaialble to the end user.
+
+```{r}
+head(salah$history)
+```
+
+There are some variables that don't completely make sense, so columns like fixture and kickoff_time I'll remove before the end user sees the result.

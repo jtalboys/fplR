@@ -1,0 +1,24 @@
+Package: fplR
+Title: Access Fantasy Premier League Data
+Version: 0.0.1
+Authors@R: 
+    person(given = "Jack",
+           family = "Talboys",
+           role = c("aut", "cre"),
+           email = "jtalboys@mango-solutions.com")
+Description: Allows users to extract information about players (and maybe more!)
+  via the Fantasy Premier League API. This package only works for the current 
+  (2019/20) season. 
+URL: https://github.com/jtalboys/fplR
+BugReports: https://github.com/jtalboys/fplR/issues
+Depends:
+  R (>= 2.10)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Imports: 
+    dplyr,
+    magrittr,
+    jsonlite,
+    purrr
