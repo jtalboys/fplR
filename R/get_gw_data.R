@@ -1,4 +1,4 @@
-#' Function to extract data for a specific player from a certain gameweek.
+#' Function to extract data for a specific player(s) from a certain gameweek or weeks.
 #' 
 #' @param players a vector of players, referred to either using their ID's (numerical
 #' vector) or names (character vector).
@@ -8,11 +8,28 @@
 #' Note that if gameweeks chosen haven't been played yet then data won't be displayed for them.
 #' Defaults to all gameweeks.
 #' 
-#' @return A data frame, with one row of data for each chosen player for each chosen gameweek
+#' @return A data frame, with one row of data for each chosen player for each chosen gameweek.
+#' The data has 29 variables:
+#' \describe{
+#'    \item{name}{Player name}
+#'    \item{opponent}{Team played against in this round}
+#'    \item{total_points}{Total fpl points earned in this gameweek}
+#'    \item{was_home}{Boolean - did the player play at home?}
+#'    \item{team_h_score, team_a_score}{Number of goals scored by the home or away team}
+#'    \item{round}{The Gameweek}
+#'    \item{minutes}{Minutes played by the player in this gameweek}
+#'    \item{goals_scored, assists, clean_sheets, goals_conceded, own_goals, penalties_saved,
+#'    penalties_missed, yellow_cards, red_cards, saves}{Statistics related to the players performance in this gameweek}
+#'    \item{bonus}{fpl bonus points awarded to the player in this gameweek}
+#'    \item{bps}{Points allocated to the player by the fpl bonus points system - used to determine how many bonus point player should be awarded}
+#'    \item{influence, creativity,threat, ict_index}{Values calculated by fpl algorithms}
+#'    \item{value}{The cost of the player in this gameweek  (£m)}
+#'    \item{transfers_balance, transfers_in, transfers_out}{Figures relating to how many managers transferred this player in/out for this gameweek}
+#'    \item{selected}{Number of fpl managers selected by}}
 #' 
 #' @export
 #' 
-#' @importFrom dplyr filter pull left_join select everything
+#' @importFrom dplyr filter pull left_join select everything mutate
 #' @importFrom magrittr %>%
 #' @importFrom jsonlite fromJSON
 #' @importFrom purrr map_dfr
@@ -64,7 +81,9 @@ get_gw_data <- function(players, gw = 1:38) {
     # into an actual name
     dplyr::left_join(teams %>% dplyr::select(id, opponent = name),
                      by = c('opponent_team' = 'id')) %>% 
-    dplyr::select(name, opponent, dplyr::everything(), -opponent_team)
+    dplyr::select(name, opponent, dplyr::everything(), -opponent_team) %>%
+    # Dived the value by 10 to get the value in millions
+    dplyr::mutate(value = value / 10)
   
   df
 }
