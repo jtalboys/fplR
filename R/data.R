@@ -1,6 +1,13 @@
 # Firstly define the global variables to appease the R CMD Check
 utils::globalVariables(c('element', 'fixture', 'id', 'id_lookup', 'kickoff_time',
-                         'name', 'opponent', 'opponent_team', 'teams'))
+                         'name', 'opponent', 'opponent_team', 'teams', 'assists',
+                         'bonus', 'bps', 'clean_sheets', 'cost_change_start',
+                         'creativity', 'dreamteam_count', 'form', 'goals_conceded',
+                         'goals_scored', 'ict_index', 'influence', 'minutes',
+                         'now_cost', 'own_goals', 'penalties_missed', 'penalties_saved',
+                         'points_per_game', 'red_cards', 'saves', 'selected_by_percent',
+                         'start_cost', 'status', 'team', 'team_name', 'threat', 
+                         'total_points', 'value', 'yellow_cards'))
 
 #' Corresponding id, team and position for every player in fpl 2019/20
 #'

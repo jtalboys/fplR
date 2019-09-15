@@ -21,5 +21,4 @@ Imports:
     dplyr,
     magrittr,
     jsonlite,
-    purrr,
-    curl
+    purrr
