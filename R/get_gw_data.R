@@ -18,14 +18,14 @@
 #' @importFrom purrr map_dfr
 #' 
 #' @examples 
-#' get_player_data('Simon Mignolet')
+#' get_gw_data('Simon Mignolet')
 #' 
-#' get_player_data(190, 1:2)
+#' get_gw_data(190, 1:2)
 #' 
-#' get_player_data(1:10, 3)
+#' get_gw_data(1:10, 3)
 #' 
-#' get_player_data(c('Simon Mignolet', 'Laurent Koscielny'))
-get_player_data <- function(players, gw = 1:38) {
+#' get_gw_data(c('Simon Mignolet', 'Laurent Koscielny'))
+get_gw_data <- function(players, gw = 1:38) {
 
   # start with the base url
   url <- 'https://fantasy.premierleague.com/api/element-summary/'
