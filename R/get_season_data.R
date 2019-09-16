@@ -33,6 +33,39 @@
 #' 
 #' get_season_data(350:352)
 get_season_data <- function(players){
+  
+  # Firstly check that players/ player id's that have been given are valid
+  # Can do this by checking against the id_lookup table
+  if(is.character(players)) {
+    if(any(!(players %in% id_lookup$name))) {
+      
+      # obtain the naughty names positions
+      incorrect <- which(!(players %in% id_lookup$name))
+      
+      # Print out a warning message
+      message(paste0('The following player names provided are not valid: ',
+                     paste0(players[incorrect], collapse = ', ')))
+      
+      # Now remove the offending names
+      players <- players[-incorrect]
+    }
+  } else if (is.numeric(players)) {
+    if(any(!(players %in% id_lookup$id))) {
+      
+      # obtain the naughty id's positions
+      incorrect <- which(!(players %in% id_lookup$id))
+      
+      message(paste0('The following player ids provided are not valid: ',
+                     paste0(players[incorrect], collapse = ', ')))
+      
+      # Now remove the offending id's
+      players <- players[-incorrect]
+    }
+  }
+  
+  # Just check that there are some valid player names/ id's left
+  if(length(players) == 0) stop("No valid player names or id's were provided")
+  
   # Set the url
   url <- 'https://fantasy.premierleague.com/api/bootstrap-static/'
   
