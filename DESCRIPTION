@@ -8,7 +8,7 @@ Authors@R:
            email = "jtalboys@mango-solutions.com")
 Description: Allows users to extract information about players (and maybe more!)
   via the Fantasy Premier League API. This package only works for the current 
-  (2019/20) season. 
+  (2020/21) season. 
 URL: https://github.com/jtalboys/fplR
 BugReports: https://github.com/jtalboys/fplR/issues
 Depends:
