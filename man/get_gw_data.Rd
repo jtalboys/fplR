@@ -40,11 +40,13 @@ The data has 29 variables:
 Function to extract data for a specific player(s) from a certain gameweek or weeks.
 }
 \examples{
-get_gw_data('Simon Mignolet')
+ # Not run since it's hard to pick a player who'll be around
+ # forever
+ #get_gw_data('Simon Mignolet')
 
 get_gw_data(190, 1:2)
 
 get_gw_data(1:10, 3)
 
-get_gw_data(c('Simon Mignolet', 'Laurent Koscielny'))
+#get_gw_data(c('Simon Mignolet', 'Laurent Koscielny'))
 }
