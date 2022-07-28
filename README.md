@@ -9,8 +9,8 @@ There are 2 different levels of data to access; by gameweek or by the season as 
 
 You WILL need access to the internet to use these functions, hopefully that's not too much of a trade-off for up to date stats!
 
-Now there are a lot of complicated names of players in the Premier League, with accents and all sorts. To save you having to spell right and being able to access some of the trickier named players at all there is another way! Each player has an 'id' associated with them. Both the `get_*` functions will accept this 'id' as a numeric in place of the player name. But where do I get this 'id' Jack? I hear you cry. Never fear. Just look it up in the `id_lookup` table that comes with the package.
+Now there are a lot of complicated names of players in the Premier League, with accents and all sorts. To save you having to spell right and being able to access some of the trickier named players at all there is another way! Each player has an 'id' associated with them. Both the `get_*` functions will accept this 'id' as a numeric in place of the player name. Just look it up in the `id_lookup` table that comes with the package.
 
-Oh, you can also pass through a vector of names/id's at once (e.g. `get_season_data(150:160)`). Obtaining player data for multiple Gameweeks works in a similar way (`get_gw_data(191, 1:5)`). 
+You can also pass through a vector of names/id's at once (e.g. `get_season_data(150:160)`). Obtaining player data for multiple Gameweeks works in a similar way (`get_gw_data(191, 1:5)`). 
 
-Admittedly both functions spit out some rather wide and horrible datasets, full details on the output can be found in the help files for each function. I wanted to retain as much data as possible during scraping, there's a whole `tidyverse` out there for dealing with it once you've got it.  
+Both functions spit out some rather wide and horrible datasets, full details on the output can be found in the help files for each function. I wanted to retain as much data as possible during scraping.
