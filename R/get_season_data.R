@@ -27,11 +27,12 @@
 #' @importFrom dplyr filter pull select mutate left_join case_when everything
 #' 
 #' @examples 
-#' get_season_data(301)
+#' # Don't run as will fail for missing players in the future
+#' #get_season_data(301)
 #' 
-#' get_season_data('John Fleck')
+#' #get_season_data('John Fleck')
 #' 
-#' get_season_data(350:352)
+#' #get_season_data(350:352)
 get_season_data <- function(players){
   
   # Firstly check that players/ player id's that have been given are valid
@@ -115,7 +116,17 @@ get_season_data <- function(players){
       status == 'd' ~ "Injured - may play",
       status == 's' ~ "Suspended",
       TRUE ~ as.character(status)
-    ))
+    )) %>%
+    # Finally make sure the numeric columns are so
+    dplyr::mutate(
+      dplyr::across(
+        c(start_cost, now_cost, dreamteam_count, form, points_per_game, selected_by_percent,
+          total_points, minutes, goals_scored, assists, clean_sheets, goals_conceded, 
+          own_goals, penalties_saved, yellow_cards, red_cards, saves, bonus, bps, 
+          influence, creativity, threat, ict_index),
+        as.numeric
+      )
+    )
   
   # And that's it!
   final_data
