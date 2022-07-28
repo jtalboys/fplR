@@ -43,3 +43,34 @@ utils::globalVariables(c('element', 'fixture', 'id', 'id_lookup', 'kickoff_time'
 #'}
 #'@source \url{https://fantasy.premierleague.com/api/bootstrap-static/}
 "teams"
+
+#' Data from the previous season
+#' 
+#' Obtained by running \code{get_season_data()} for all players on 28/07/22. As 
+#' this is before the start of the new season it stll contains data from last season
+#' 
+#' @format A data frame with 533 rows and 17 variables
+#' \describe{
+#'    \item{id}{player id - can be used to pull data in other functions}
+#'    \item{player_name}{Player name}
+#'    \item{points_per_game}{Points per game from 21/22}
+#'    \item{total_points}{Total points from 21/22}
+#'    \item{minutes}{Total minutes played 21/22}
+#'    \item{goals_scored}{Goals scored 21/22}
+#'    \item{assists}{Assists 21/22}
+#'    \item{clean_sheets}{Clean Sheets 21/22}
+#'    \item{goals_conceded}{Goals Conceded 21/22}
+#'    \item{own_goals}{Own goals 21/22}
+#'    \item{penalties_saved}{Penalties saved 21/22}
+#'    \item{penalties_missed}{Penalties missed 21/22}
+#'    \item{yellow_cards}{Yellow cards 21/22}
+#'    \item{red_cards}{Red cards 21/22}
+#'    \item{saves}{Saves 21/22}
+#'    \item{bonus}{Bonus points 21/22}
+#'    \item{bps}{Bonus points system total 21/22}
+#'    }
+#' 
+#' 
+#' @source \url{https://fantasy.premierleague.com/api/bootstrap-static/}
+#' 
+"last_season_21_22"

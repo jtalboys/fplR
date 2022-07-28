@@ -37,13 +37,13 @@
 #' @examples
 #'  # Not run since it's hard to pick a player who'll be around
 #'  # forever
-#'  #get_gw_data('Simon Mignolet')
+#'  # get_gw_data('Simon Mignolet')
 #' 
-#' get_gw_data(190, 1:2)
+#'  # get_gw_data(190, 1:2)
 #' 
-#' get_gw_data(1:10, 3)
+#'  # get_gw_data(1:10, 3)
 #' 
-#' #get_gw_data(c('Simon Mignolet', 'Laurent Koscielny'))
+#'  # get_gw_data(c('Simon Mignolet', 'Laurent Koscielny'))
 get_gw_data <- function(players, gw = 1:38) {
   
   # Firstly check that players/ player id's that have been given are valid
@@ -101,11 +101,18 @@ get_gw_data <- function(players, gw = 1:38) {
   queries <- paste0(url, players, '/')
   
   # Iterate over these queries, applying fromJSON from the jsonlite package
-  df <- purrr::map_dfr(queries, ~{data <- jsonlite::fromJSON(.x)
-                        # For now we're only interested in the history dataset
-                        data$history %>%
-                          dplyr::filter(round %in% gw)}
-             )
+  df <- purrr::map_dfr(queries, ~ {
+    data <- jsonlite::fromJSON(.x)
+    
+    # Check history is present, if not stop
+    if (length(data$history) == 0) {
+      stop("There is no history for the selected player")
+    }
+    
+    # For now we're only interested in the history dataset
+    data$history %>%
+      dplyr::filter(round %in% gw)
+  })
   
   # Lovely!
   # Now to just tidy it up for the end user

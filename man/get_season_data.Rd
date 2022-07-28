@@ -34,9 +34,10 @@ Function which gives access to higher level data about each player, aggregated a
 season level.
 }
 \examples{
-get_season_data(301)
+# Don't run as will fail for missing players in the future
+#get_season_data(301)
 
-get_season_data('John Fleck')
+#get_season_data('John Fleck')
 
-get_season_data(350:352)
+#get_season_data(350:352)
 }
